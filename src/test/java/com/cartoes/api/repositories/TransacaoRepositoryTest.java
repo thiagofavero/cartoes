@@ -2,11 +2,11 @@ package com.cartoes.api.repositories;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Before;
@@ -94,15 +94,11 @@ public class TransacaoRepositoryTest {
 	@Test
 	public void testFindByCartaoNumero() {
 		
-		List<Transacao> lstTransacao = transacaoRepository.findByCartaoNumero(cartaoTeste.getNumero());
+		Optional<List<Transacao>> lstTransacoes = transacaoRepository.findByNumeroCartao(transacaoTeste.getCartao().getNumero());
 		
-		if (lstTransacao.size() != 1) {
-			fail();
-		}
-		
-		Transacao transacao = lstTransacao.get(0);
-		
-		assertTrue(transacao.getCartao().getNumero().equals(transacaoTeste.getCartao().getNumero()));
+		List<Transacao> transacao = lstTransacoes.get();
+	
+		assertTrue(transacaoTeste.getCartao().getNumero().equals(transacao.get(0).getCartao().getNumero()));
 				
 	}
 
