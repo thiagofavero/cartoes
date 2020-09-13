@@ -17,7 +17,7 @@ public class TransacaoDto {
 	@NotEmpty(message = "Valor não pode ser vazio.")
 	private String valor;
 
-	@NotEmpty(message = "Nome não pode ser vazio.")
+	@NotEmpty(message = "Parcelas não pode ser vazia.")
 	@Length(min = 1, max = 24, message = "Quantidade de parcelas devem ser entre 1 a 24 vezes.")	
 	private String qdtParcelas;
 
