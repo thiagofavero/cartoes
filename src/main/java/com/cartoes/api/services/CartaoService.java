@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import com.cartoes.api.entities.Cartao;
@@ -30,6 +32,7 @@ public class CartaoService {
 		return cartao;
 	}
 
+	@Cacheable("cacheCartaoesPorCliente")
 	public Optional<List<Cartao>> buscarPorClienteId(int clienteId) throws ConsistenciaException {
 		log.info("Service: buscando os cartoes do cliente de id: {}", clienteId);
 		Optional<List<Cartao>> cartoes = Optional.ofNullable(cartaoRepository.findByClienteId(clienteId));
@@ -39,7 +42,8 @@ public class CartaoService {
 		}
 		return cartoes;
 	}
-
+	
+	@CachePut("cacheCartaoesPorCliente")
 	public Cartao salvar(Cartao cartao) throws ConsistenciaException {
 		log.info("Service: salvando o cartao: {}", cartao);
 		if (!clienteRepository.findById(cartao.getCliente().getId()).isPresent()) {
@@ -56,6 +60,7 @@ public class CartaoService {
 		}
 	}
 
+	@CachePut("cacheCartaoesPorCliente")
 	public void excluirPorId(int id) throws ConsistenciaException {
 		log.info("Service: excluíndo o cartão de id: {}", id);
 		buscarPorId(id);
